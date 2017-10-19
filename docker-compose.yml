@@ -1,0 +1,26 @@
+version: '2'
+services:
+  zadik:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - fringe_apigateway
+  lumen-web:
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes_from:
+      - zadik
+    ports:
+      - 81:80
+    networks:
+      - fringe_apigateway
+
+networks:
+  fringe_apigateway:
+    external: true
